@@ -4,9 +4,11 @@ class LinkedList {
   constructor() {
     this.head = null;
   }
+
   insertFirst(item) {
     this.head = new _Node(item, this.head);
   }
+
   insertLast(item) {
     if (this.head === null) {
       this.insertFirst(item);
@@ -18,6 +20,7 @@ class LinkedList {
       tempNode.next = new _Node(item, null);
     }
   }
+
   insertBefore(newItem, nextItem) {
     if (this.head === null) {
       return null;
@@ -43,6 +46,7 @@ class LinkedList {
     let newNode = new _Node(newItem, previousNode.next);
     previousNode.next = newNode;
   }
+
   insertAfter(newItem, prevItem) {
     if (!this.head) {
       return null;
@@ -63,14 +67,18 @@ class LinkedList {
     let newNode = new _Node(newItem, currNode.next);
     currNode.next = newNode;
   }
-  insertAt(location, newNode){
+
+  insertAt(location, newItem) {
     let currNode = this.head;
-    while (currNode != null && currNode.value != location){
-      currNode = currNode.next
+    while (currNode != null && currNode.value != location) {
+      currNode = this.head.next;
     }
-    let newNode = new _Node(newItem, currNode.next);
-    currNode.next = newNode;
+    if (currNode.value === location) {
+      this.insertAfter(newItem, currNode.value);
+      return;
+    }
   }
+
   find(item) {
     // Start at the head
     let currNode = this.head;
@@ -92,6 +100,7 @@ class LinkedList {
     // Found it
     return currNode;
   }
+
   remove(item) {
     // If the list is empty
     if (!this.head) {
@@ -119,6 +128,151 @@ class LinkedList {
     previousNode.next = currNode.next;
   }
 }
+
+function display(list) {
+  let currNode = list.head;
+  while (currNode != null) {
+    console.log(currNode.value);
+    currNode = currNode.next;
+  }
+}
+
+function size(list) {
+  let currNode = list.head;
+  let counter = 0;
+  while (currNode !== null) {
+    currNode = currNode.next;
+    counter++;
+  }
+  console.log("This list has " + counter + " items");
+}
+
+function isEmpty(list) {
+  let currNode = list.head;
+  if (currNode === null) {
+    console.log("List is empty");
+  } else {
+    console.log("List is not empty");
+  }
+}
+
+function findPrevious(list, node) {
+  let currNode = list.head;
+  let previousNode = list.head;
+  let stepper = 1;
+
+  if (node <= 0) {
+    console.log("Node must be greater than 0");
+    return;
+  }
+
+  while (stepper < node) {
+    if (currNode === null) {
+      console.log("Boundary error");
+      return;
+    }
+    stepper++;
+    previousNode = currNode;
+    currNode = currNode.next;
+  }
+  if (previousNode === null || node === 0) {
+    console.log("Item not found");
+    return;
+  }
+  console.log(previousNode.value);
+  return;
+}
+
+function findLast(list) {
+  if (list.head === null) {
+    console.log("Linked list does not exist");
+    return;
+  }
+  let currNode = list.head;
+  while (currNode.next !== null) {
+    currNode = currNode.next;
+  }
+  console.log(currNode.value);
+  return;
+}
+
+function reverseList(list) {
+  let currNode = list.head;
+  let prevNode = null;
+  let tempNode = currNode;
+
+  while (currNode !== null) {
+    tempNode = currNode.next;
+    currNode.next = prevNode;
+    prevNode = currNode;
+    currNode = tempNode;
+  }
+  list.head = prevNode;
+  return display(list);
+}
+
+function thirdFromEnd(list) {
+  if (list.head === null) {
+    console.log("List is empty :(");
+    return;
+  }
+
+  let currNode = list.head;
+  let prevNode = null;
+  let prevPrevNode = null;
+
+  while (currNode.next !== null) {
+    prevPrevNode = prevNode;
+    prevNode = currNode;
+    currNode = currNode.next;
+  }
+  if (prevPrevNode === null) {
+    console.log("List isn't long enough!");
+    return;
+  }
+  console.log(prevPrevNode.value + " is the 3rd from the end!");
+  return prevPrevNode.value;
+}
+
+function middleOfList(list) {
+  if (list.head === null) {
+    console.log("List is empty");
+    return;
+  }
+
+  let currNode = list.head;
+  let stepper = 1;
+  while (currNode.next !== null) {
+    currNode = currNode.next;
+    stepper++;
+  }
+  console.log(stepper);
+  let middle = Math.ceil(stepper / 2);
+  console.log(middle);
+  stepper = 1;
+  currNode = list.head;
+  while (stepper < middle) {
+    stepper++;
+    currNode = currNode.next;
+  }
+  console.log(currNode.value);
+  return currNode;
+}
+
+function cycleFinder(list) {
+  let slowNode = list.head;
+  let fastNode = list.head;
+
+  while (slowNode.next && slowNode) {
+    slowNode = slowNode.next;
+    fastNode = fastNode.next.next;
+    if (slowNode === fastNode) {
+      console.log("CYCLE!");
+      return true;
+    }
+  }
+}
+
 function main() {
   let SLL = new LinkedList();
   SLL.insertFirst("Apollo");
@@ -129,9 +283,9 @@ function main() {
   SLL.insertLast("Tauhida");
   SLL.remove("Husker");
   console.log(SLL);
-  insertBefore("Athena", "Boomer");
-  insertAfter("Hotdog", "Helo");
-  remove("Tauhida")
+  SLL.insertBefore("Athena", "Boomer");
+  SLL.insertAfter("Hotdog", "Helo");
+  SLL.remove("Tauhida");
 }
 
 main();
