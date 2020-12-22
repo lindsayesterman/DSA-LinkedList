@@ -63,6 +63,14 @@ class LinkedList {
     let newNode = new _Node(newItem, currNode.next);
     currNode.next = newNode;
   }
+  insertAt(location, newNode){
+    let currNode = this.head;
+    while (currNode != null && currNode.value != location){
+      currNode = currNode.next
+    }
+    let newNode = new _Node(newItem, currNode.next);
+    currNode.next = newNode;
+  }
   find(item) {
     // Start at the head
     let currNode = this.head;
@@ -121,6 +129,9 @@ function main() {
   SLL.insertLast("Tauhida");
   SLL.remove("Husker");
   console.log(SLL);
+  insertBefore("Athena", "Boomer");
+  insertAfter("Hotdog", "Helo");
+  remove("Tauhida")
 }
 
 main();
